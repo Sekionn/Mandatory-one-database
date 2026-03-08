@@ -2,6 +2,7 @@ USE choose_your_fate;
 
 DELIMITER $$
 
+DROP PROCEDURE IF EXISTS `sp_create_character`$$
 CREATE DEFINER=`root`@`%` PROCEDURE `sp_create_character`(
 IN p_account_id INT,
 IN p_race_detail_id INT,
@@ -25,6 +26,79 @@ ELSE
 		SET MESSAGE_TEXT = 'Character limit reached.';
 END IF;
 
+END$$
+
+DROP PROCEDURE IF EXISTS `sp_delete_character`$$
+CREATE PROCEDURE `sp_delete_character`(IN p_character_id INT)
+BEGIN
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+		ROLLBACK;
+        RESIGNAL;
+	END;
+    START TRANSACTION;
+		DELETE FROM character_has_quest WHERE character_id = p_character_id;
+        
+		DELETE FROM character_path_choice WHERE character_path_id IN (
+			SELECT id FROM character_path WHERE character_path.character_id = p_character_id);
+		
+        DELETE FROM inventory_has_item WHERE inventory_id IN (
+			SELECT id FROM inventory WHERE inventory.character_id = p_character_id);
+			
+        DELETE FROM character_path WHERE character_id = p_character_id;
+        
+        DELETE FROM inventory WHERE character_id = p_character_id;
+        
+        DELETE FROM character_details WHERE character_id = p_character_id;
+        
+        DELETE FROM equipment WHERE character_id = p_character_id;
+        
+        DELETE FROM `character` WHERE id = p_character_id;
+    COMMIT;
+END$$
+
+DROP PROCEDURE IF EXISTS `sp_make_choice`$$
+CREATE PROCEDURE `sp_make_choice`(IN p_character_id INT, IN p_choice_id INT)
+BEGIN
+    DECLARE v_character_scene_id INT;
+    DECLARE v_choice_scene_id INT;
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+		ROLLBACK;
+        RESIGNAL;
+	END;
+    START TRANSACTION;
+    
+    SELECT scene_id INTO v_character_scene_id FROM `character` WHERE `character`.id = p_character_id;
+    SELECT scene_id INTO v_choice_scene_id FROM choice WHERE id = p_choice_id;
+    
+    IF v_character_scene_id != v_choice_scene_id THEN
+		SIGNAL SQLSTATE '45000'
+			SET MESSAGE_TEXT = 'Character is not in the correct scene for this choice.';
+	END IF;	
+    
+    INSERT INTO character_path_choice (character_path_id, choice_id)
+    VALUES (
+		(SELECT id FROM character_path WHERE character_id = p_character_id),
+        p_choice_id
+    );
+    
+    UPDATE `character` SET scene_id = (SELECT destination_scene_id FROM choice WHERE id = p_choice_id) 
+    WHERE id = p_character_id;
+    
+    COMMIT;
+END$$
+
+DROP PROCEDURE IF EXISTS `sp_grant_quest_rewards`$$
+CREATE PROCEDURE `sp_grant_quest_rewards`(
+IN p_character_id INT,
+IN p_quest_id INT)
+BEGIN
+INSERT INTO inventory_has_item (item_id, inventory_id, amount)
+	SELECT quest_has_item.item_id, inventory.id, 1 FROM quest_has_item
+    INNER JOIN inventory ON inventory.character_id = p_character_id
+    WHERE quest_has_item.quest_id = p_quest_id
+ON DUPLICATE KEY UPDATE amount = amount + 1;
 END$$
 
 DELIMITER ;
