@@ -11,7 +11,7 @@ END IF;
 END$$
 
 DROP TRIGGER IF EXISTS `create_character_related_tables`$$
-CREATE TRIGGER `create_character_related_tables` AFTER INSERT ON `character` FOR EACH ROW
+CREATE TRIGGER `create_character_related_tables` AFTER INSERT ON `character_avatar` FOR EACH ROW
 BEGIN
 INSERT INTO inventory (character_id)
 VALUES (NEW.id);
