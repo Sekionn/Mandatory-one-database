@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36" version="29.6.1">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/145.0.0.0 Safari/537.36">
   <diagram name="Side-1" id="2ZVFS7ij6YqMsJnZ4pSM">
-    <mxGraphModel dx="1924" dy="563" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2039" dy="629" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -81,7 +81,7 @@
         <mxCell id="oCbJj01L7q1pn7OCUGyy-9" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Choices" vertex="1">
           <mxGeometry height="60" width="120" x="610" y="310" as="geometry" />
         </mxCell>
-        <mxCell id="oCbJj01L7q1pn7OCUGyy-13" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Character_lifepath" vertex="1">
+        <mxCell id="oCbJj01L7q1pn7OCUGyy-13" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="Character_path" vertex="1">
           <mxGeometry height="60" width="120" x="610" y="130" as="geometry" />
         </mxCell>
         <mxCell id="oCbJj01L7q1pn7OCUGyy-18" edge="1" parent="1" source="oCbJj01L7q1pn7OCUGyy-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" target="oCbJj01L7q1pn7OCUGyy-2" value="has started for">
